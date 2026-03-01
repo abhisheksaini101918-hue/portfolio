@@ -1,90 +1,83 @@
-/* Loader */
-window.onload = () => {
-    setTimeout(() => {
-        document.getElementById("loader").style.display = "none";
-    }, 1500);
-};
+/* ---------------- Smooth Scroll ---------------- */
 
-/* Typing Effect */
-const text = "Cybersecurity Student | CEH Aspirant | Ethical Hacker";
-let index = 0;
-const typing = document.getElementById("typing-text");
-
-function typeEffect() {
-    if (index < text.length) {
-        typing.innerHTML += text.charAt(index);
-        index++;
-        setTimeout(typeEffect, 80);
+document.querySelectorAll('nav a').forEach(link=>{
+  link.addEventListener('click',e=>{
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if(target){
+      target.scrollIntoView({behavior:'smooth'});
     }
-}
-typeEffect();
-
-/* Scroll Reveal */
-const sections = document.querySelectorAll(".section");
-
-window.addEventListener("scroll", () => {
-    sections.forEach(section => {
-        const top = section.getBoundingClientRect().top;
-        if (top < window.innerHeight - 100) {
-            section.classList.add("show");
-        }
-    });
+  });
 });
 
-/* Particle Background */
-const canvas = document.getElementById("particles");
+
+/* ---------------- Reveal Animation ---------------- */
+
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.style.opacity = 1;
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+},{threshold:0.15});
+
+document.querySelectorAll(
+  '.skill-card,.project-card,.timeline-item,.cert-card,.deep-card,.process-card'
+).forEach(card=>{
+  card.style.opacity = 0;
+  card.style.transform = 'translateY(20px)';
+  card.style.transition = '0.6s ease';
+  observer.observe(card);
+});
+
+
+/* ================= Hacker Matrix Background ================= */
+
+const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let particles = [];
-
-class Particle {
-    constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.r = Math.random() * 1.5;
-        this.dx = (Math.random() - 0.5) * 0.6;
-        this.dy = (Math.random() - 0.5) * 0.6;
-    }
-
-    draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-        ctx.fillStyle = "#00e5ff";
-        ctx.fill();
-    }
-
-    move() {
-        this.x += this.dx;
-        this.y += this.dy;
-        if (this.x < 0 || this.x > canvas.width) this.dx *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.dy *= -1;
-    }
+function resize(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 }
 
-function initParticles() {
-    particles = [];
-    for (let i = 0; i < 150; i++) {
-        particles.push(new Particle());
+resize();
+window.addEventListener("resize", resize);
+
+const letters = "01アカサタナハマヤラワABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const fontSize = 14;
+
+function createDrops(){
+  return Array(Math.floor(canvas.width / fontSize)).fill(1);
+}
+
+let drops = createDrops();
+
+window.addEventListener("resize", ()=>{
+  drops = createDrops();
+});
+
+function drawMatrix(){
+
+  ctx.fillStyle = "rgba(2,6,23,0.08)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  ctx.fillStyle = "#22c55e";
+  ctx.font = fontSize + "px monospace";
+
+  for(let i=0;i<drops.length;i++){
+
+    const char = letters[Math.floor(Math.random()*letters.length)];
+
+    ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+
+    if(drops[i] * fontSize > canvas.height && Math.random() > 0.975){
+      drops[i] = 0;
     }
+
+    drops[i]++;
+  }
 }
 
-function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => {
-        p.move();
-        p.draw();
-    });
-    requestAnimationFrame(animate);
-}
-
-initParticles();
-animate();
-
-window.onresize = () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    initParticles();
-};
+setInterval(drawMatrix,33);
