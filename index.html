@@ -6,7 +6,7 @@
 <title>Abhishek Saini | Cybersecurity Engineer Portfolio</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="style.css">
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
@@ -440,41 +440,60 @@ This project demonstrates offensive security methodology, attacker lifecycle, an
 
 
 <!-- CERTIFICATIONS -->
-
-<section id="certifications" class="section">
+<section id="certifications" class="section dark">
 
 <h3 class="section-title">Certifications</h3>
 
 <div class="cert-grid">
 
 <div class="cert-card">
-
-Certified Ethical Hacker (CEH) – Pursuing
-
+<img src="certificates/cybersecurity-certification-course-2026.jpg" onclick="openCert(this.src)">
+<p>Twelve Months Certification Course in Cybersecurity</p>
 </div>
 
 <div class="cert-card">
-
-Web Application Penetration Testing – Pursuing
-
+<img src="certificates/web-application-penetration-testing-wapt.jpg" onclick="openCert(this.src)">
+<p>Web Application Penetration Testing (WAPT)</p>
 </div>
 
 <div class="cert-card">
-
-IoT Security – Pursuing
-
+<img src="certificates/advanced-penetration-testing.jpg" onclick="openCert(this.src)">
+<p>Advanced Penetration Testing</p>
 </div>
 
 <div class="cert-card">
+<img src="certificates/iot-penetration-testing.jpg" onclick="openCert(this.src)">
+<p>IoT Penetration Testing</p>
+</div>
 
-Networking – Pursuing
+<div class="cert-card">
+<img src="certificates/ethical-hacking-certification.jpg" onclick="openCert(this.src)">
+<p>Ethical Hacking Certification</p>
+</div>
 
+<div class="cert-card">
+<img src="certificates/digital-forensics-certification.jpg" onclick="openCert(this.src)">
+<p>Digital Forensics</p>
+</div>
+
+<div class="cert-card">
+<img src="certificates/python-programming-essentials.jpg" onclick="openCert(this.src)">
+<p>Python Programming Essentials</p>
+</div>
+
+<div class="cert-card">
+<img src="certificates/linux-administration.jpg" onclick="openCert(this.src)">
+<p>Linux Administration</p>
+</div>
+
+<div class="cert-card">
+<img src="certificates/networking-administration.jpg" onclick="openCert(this.src)">
+<p>Networking Administration</p>
 </div>
 
 </div>
 
 </section>
-
 
 
 <!-- RESUME -->
@@ -563,9 +582,11 @@ https://www.linkedin.com/in/abhishekk-saini-a50538333
 
 </footer>
 
+<!-- Certificate Popup Viewer -->
+<div id="certPopup" class="cert-popup" onclick="closeCert()">
+  <img id="popupImg">
+</div>
 
 <script src="script.js"></script>
-
 </body>
-
 </html>

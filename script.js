@@ -1,34 +1,54 @@
 /* ---------------- Smooth Scroll ---------------- */
 
-document.querySelectorAll('nav a').forEach(link=>{
-  link.addEventListener('click',e=>{
+document.querySelectorAll('nav a').forEach(link => {
+
+  link.addEventListener('click', e => {
+
     e.preventDefault();
+
     const target = document.querySelector(link.getAttribute('href'));
+
     if(target){
-      target.scrollIntoView({behavior:'smooth'});
+      target.scrollIntoView({
+        behavior: "smooth"
+      });
     }
+
   });
+
 });
 
 
 /* ---------------- Reveal Animation ---------------- */
 
-const observer = new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
+const observer = new IntersectionObserver((entries, obs) => {
+
+  entries.forEach(entry => {
+
     if(entry.isIntersecting){
-      entry.target.style.opacity = 1;
-      entry.target.style.transform = 'translateY(0)';
+
+      entry.target.style.opacity = "1";
+      entry.target.style.transform = "translateY(0)";
+
+      obs.unobserve(entry.target);
+
     }
+
   });
-},{threshold:0.15});
+
+},{ threshold:0.15 });
+
 
 document.querySelectorAll(
-  '.skill-card,.project-card,.timeline-item,.cert-card,.deep-card,.process-card'
-).forEach(card=>{
-  card.style.opacity = 0;
-  card.style.transform = 'translateY(20px)';
-  card.style.transition = '0.6s ease';
+'.skill-card,.project-card,.timeline-item,.cert-card,.deep-card,.process-card'
+).forEach(card => {
+
+  card.style.opacity = "0";
+  card.style.transform = "translateY(20px)";
+  card.style.transition = "0.6s ease";
+
   observer.observe(card);
+
 });
 
 
@@ -37,26 +57,24 @@ document.querySelectorAll(
 const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
 
-function resize(){
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-
-resize();
-window.addEventListener("resize", resize);
-
 const letters = "01アカサタナハマヤラワABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const fontSize = 14;
 
-function createDrops(){
-  return Array(Math.floor(canvas.width / fontSize)).fill(1);
+let drops = [];
+
+function resizeCanvas(){
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  drops = Array(Math.floor(canvas.width / fontSize)).fill(1);
+
 }
 
-let drops = createDrops();
+resizeCanvas();
 
-window.addEventListener("resize", ()=>{
-  drops = createDrops();
-});
+window.addEventListener("resize", resizeCanvas);
+
 
 function drawMatrix(){
 
@@ -68,7 +86,7 @@ function drawMatrix(){
 
   for(let i=0;i<drops.length;i++){
 
-    const char = letters[Math.floor(Math.random()*letters.length)];
+    const char = letters[Math.floor(Math.random() * letters.length)];
 
     ctx.fillText(char, i * fontSize, drops[i] * fontSize);
 
@@ -76,8 +94,36 @@ function drawMatrix(){
       drops[i] = 0;
     }
 
-    drops[i]++;
+    drops[i] += 0.3;
+
   }
+
 }
 
-setInterval(drawMatrix,33);
+
+/* -------- Smooth Animation Loop -------- */
+
+function animate(){
+
+  drawMatrix();
+  requestAnimationFrame(animate);
+
+}
+
+animate();
+
+
+/* ================= Certificate Popup Viewer ================= */
+
+function openCert(src){
+
+  document.getElementById("certPopup").style.display = "flex";
+  document.getElementById("popupImg").src = src;
+
+}
+
+function closeCert(){
+
+  document.getElementById("certPopup").style.display = "none";
+
+}
